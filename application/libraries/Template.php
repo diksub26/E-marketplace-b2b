@@ -382,7 +382,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $data['content_data'] = $content_data; 
             $data['template'] = $template; 
             $data['title'] = (!empty($this->title) ? $this->base_title.$this->title_separator.$this->title : $this->base_title); 
-
+            $data['title_page'] = (!empty($this->title) ? $this->title : ''); 
 
             return $this->ci->load->view($this->layout_path.'/'.$this->layout_name, $data);
         }
