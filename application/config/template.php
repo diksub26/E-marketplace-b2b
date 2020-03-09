@@ -26,7 +26,7 @@ $config['template']['js_list'] = array();
 
 $config['template']['auto_js_location'] = TRUE;
 
-$config['template']['base_title'] = 'My Site';
+$config['template']['base_title'] = 'Roket UMKM';
 
 $config['template']['title_separator'] = ' | ';
 
