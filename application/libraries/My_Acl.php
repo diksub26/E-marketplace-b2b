@@ -17,10 +17,9 @@ class My_Acl
     function __construct() {
         //Get instance CI
         $this->CI =& get_instance();
-        $this->_acl_init();
     }
 
-    private function _acl_init(){
+    public function acl_init(){
         $this->acl = new Acl();
         $this->CI->load->model('acl/resources_model');
         $this->resources = $this->CI->session->userdata('ROLES_MENU');
@@ -48,9 +47,10 @@ class My_Acl
 
     public function is_allowed($resource)
     {
-        if($this->CI->uri->uri_string() == 'login'){
+        if($this->CI->uri->uri_string() == ''){
             return TRUE;
         }
+
         // Check uri_string resources from the longest segment
         $has_resource = $this->_has($resource);
         while ((strlen($resource) > 0) && !$has_resource) {
