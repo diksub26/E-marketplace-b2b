@@ -10,6 +10,7 @@ class Login_Model extends CI_Model
     private $table_activity = 'count_activity_login';
     private $table_login =  'login';
     private $table_password = 'mspassword';
+    private $table_roles = 'roles_menu';
 
 
     public function login($data = '')
@@ -33,14 +34,14 @@ class Login_Model extends CI_Model
                     // Check the time limit for locking the login
                     if($timestamps_diff->i < 30){
 
-                        $login_status['msg'] = 'Sorry you have entered the login limit, your account is locked, try 30 minutes later';
+                        $login_status['msg'] = 'Sorry you have entered the login limit, try 30 minutes later';
                         log_message('Error', 'Securtiy risk for login process, user have entered the login limit');
 
                     }else{
 
                         // delete activities after more than 30 minutes
                         $this->delete_activity_login($activity_login->IPADDRESS);
-                        log_message('Info', $login['username']."account has been unlocked");
+                        log_message('Info', $data['username']."account has been unlocked");
                         
                         //go to login process
                         $login_status = $this->auth($data);
@@ -107,7 +108,12 @@ class Login_Model extends CI_Model
 
             $password_data = $this->checking_password($data_username->ID, $data['password']);
 
-            if($password_data == 1){                
+            if($password_data == 1){
+                //update roles
+                $this->load->model('acl/resources_model');
+                $this->resources_model->update_roles();  
+                $data_username->ROLE_NAME = $this->_get_role($data_username->ROLE_ID); 
+                             
                 $login_data = array('status' => 'SUCCESS', 'msg' => 'BERHASIL LOGIN KE SISTEM','data' => $data_username);
                 $this->activity_log->write_log($data_username->USERNAME, 'Login Berhasil');
             }else{
@@ -121,7 +127,7 @@ class Login_Model extends CI_Model
     public function update_activity_login($ipaddress, $count)
     {
         $this->db->where('IPADDRESS',$ipaddress);
-        $this->db->update($this->table_activity, $count);
+        $this->db->update($this->table_activity, array('COUNT'=>$count));
     }
 
     private function get_active_user($username)
@@ -148,5 +154,19 @@ class Login_Model extends CI_Model
         }
 
         return $vertify_pass;
+    }
+
+    /**
+     * this method for get data roles menu
+     * 
+     * @param int id_role
+     * @return string role name
+     */
+    private function _get_role($id_role){
+        $this->db->from($this->table_roles);
+        $this->db->where(array('id_roles_menu' => $id_role));
+        $query = $this->db->get()->row();
+
+        return (isset($query->roles_name) ? $query->roles_name : '');
     }
 }

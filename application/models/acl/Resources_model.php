@@ -13,7 +13,7 @@ class Resources_model extends CI_Model
     {
         if(!$this->session->userdata('ROLES_MENU')){
             $procedure_name = "CALL getResourcesMenu(?)";
-            $roles = ( $this->session->userdata('USER_NAME')  ? $this->session->userdata('USER_NAME') : 'Guest');
+            $roles = ( $this->session->userdata('USERNAME')  ? $this->session->userdata('USERNAME') : 'GUEST');
             $params = array($roles);
             $query = $this->db->query($procedure_name,$params)->result();
             mysqli_next_result($this->db->conn_id);
@@ -22,5 +22,19 @@ class Resources_model extends CI_Model
             }
         }
 
+    }
+
+    public function update_roles(){
+
+        $this->session->set_userdata('ROLES_MENU',"");
+        
+        $procedure_name = "CALL getResourcesMenu(?)";
+        $roles = ( $this->session->userdata('USERNAME')  ? $this->session->userdata('USERNAME') : 'GUEST');
+        $params = array($roles);
+        $query = $this->db->query($procedure_name,$params)->result();
+        mysqli_next_result($this->db->conn_id);
+        if($query){
+            $this->session->set_userdata('ROLES_MENU',$query);
+        }
     }
 }

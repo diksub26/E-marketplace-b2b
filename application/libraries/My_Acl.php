@@ -24,25 +24,33 @@ class My_Acl
         $this->acl = new Acl();
         $this->CI->load->model('acl/resources_model');
         $this->resources = $this->CI->session->userdata('ROLES_MENU');
-        // var_dump($this->resources);die;
-        //add resources to acl laminas
-        foreach ($this->resources as $key => $value) {
-            if($value->resources){
-                $this->acl->addResource(new Resource($value->resources));
+
+        if(!empty($this->resources)){
+            //add resources to acl laminas
+            foreach ($this->resources as $key => $value) {
+                if($value->resources){
+                    $this->acl->addResource(new Resource($value->resources));
+                }
             }
-        }
-        $this->acl->addRole(new Role($this->CI->session->userdata('ROLE_NAME')));
-    
-        //add allowed resources
-        foreach ($this->resources as $key => $value) {
-            if($value->resources){
-                $this->acl->allow(new Resource($this->CI->session->userdata('ROLE_NAME'),$value->resources));
+            $this->acl->addRole(new Role($this->CI->session->userdata('ROLE_NAME')));
+        
+            //add allowed resources
+            foreach ($this->resources as $key => $value) {
+                if($value->resources){
+                    $this->acl->allow(new Resource($this->CI->session->userdata('ROLE_NAME'),$value->resources));
+                }
             }
+        }else{
+            show_error("No Resources for this account, contact you're Administrator",404, $heading = 'No Resources');
+            exit();
         }
     }
 
     public function is_allowed($resource)
     {
+        if($this->CI->uri->uri_string() == 'login'){
+            return TRUE;
+        }
         // Check uri_string resources from the longest segment
         $has_resource = $this->_has($resource);
         while ((strlen($resource) > 0) && !$has_resource) {
