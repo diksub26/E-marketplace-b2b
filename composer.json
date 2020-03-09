@@ -13,7 +13,7 @@
 	"require": {
 		"php": ">=5.3.7",
 		"phpoffice/phpspreadsheet": "^1.10",
-		"zendframework/zend-permissions-acl": "^2.7"
+		"laminas/laminas-permissions-acl": "^2.7"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
