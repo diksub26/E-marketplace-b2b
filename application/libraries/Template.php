@@ -298,6 +298,72 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         /**
+         * this method for set layout path
+         * 
+         * @param $name string
+         * @return layout path
+         */
+        public function set_layout_path($layout_path){
+            if(is_string($layout_path)){
+                $this->layout_path = $layout_path;
+            }
+
+            return $this;
+        }
+
+        /**
+         * this method for mapping navigation
+         * 
+         * @param no params
+         * @return array navigation from config menu,which has acl allowed
+         * 
+         */
+
+        private function _mapping_navigation(){
+            if($this->ci->config->item('navigation')){
+                $menus = $this->ci->config->item('navigation');
+
+                foreach ($menus as $key => $menu) {
+
+                    if (isset($menu['uri']) && !$this->ci->my_acl->is_allowed($menu['uri'])) {
+                        unset($menus[$key]);
+                        continue;
+                    }
+
+                    if (isset($menu['children'])) {
+                      
+                      if (empty($menu['children'])) {
+                        unset($menus[$key]);
+                        continue;
+                      }
+
+                      //checking acl for child menu
+                      foreach($menus[$key]['children'] as $child_menu_key => $child_menu){
+                        foreach($child_menu as $child_key => $child_val){
+                          if($child_key == 'uri'){
+                            if(!$this->ci->my_acl->is_allowed($child_val)){
+                              unset($menus[$key]['children'][$child_menu_key]);
+                              continue;
+                            }else{
+                              $menus[$key]['children'] = $menu['children'];
+                            }
+                          }
+                        }
+                      }
+
+                      if(sizeof($menus[$key]['children'] )< 1){
+                        unset($menus[$key]);
+                      }
+                     
+                    }
+                }
+                return $menus;
+            }
+
+            show_error("can't find navigation on config item, check you're config file",404,$heading='Error Navbar');
+        }
+
+        /**
          * Build the template
          * 
          * @param string $content
@@ -308,6 +374,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $template['css'] = $this->css;
             $template['js_header'] = $this->js_header;
             $template['content'] = $content;
+            $template['navbar'] = $this->_mapping_navigation();
             if($this->auto_js_location != false || empty($this->auto_js_location)){
                 $template['js'] = $this->js;
             }
