@@ -109,9 +109,6 @@ class Login_Model extends CI_Model
             $password_data = $this->checking_password($data_username->ID, $data['password']);
 
             if($password_data == 1){
-                //update roles
-                $this->load->model('acl/resources_model');
-                $this->resources_model->update_roles();  
                 $data_username->ROLE_NAME = $this->_get_role($data_username->ROLE_ID); 
                              
                 $login_data = array('status' => 'SUCCESS', 'msg' => 'BERHASIL LOGIN KE SISTEM','data' => $data_username);

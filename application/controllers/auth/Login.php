@@ -5,17 +5,16 @@ class Login extends MY_Controller{
 
     public function __construct() {
         parent::__construct();
-        $this->load->model('login_model');
+        $this->load->model('auth/login_model');
         $this->model = $this->login_model;
         $this->template->set_title('Login');
+    }
+
+    public function index(){
 
         if($this->session->userdata('LOGGEDIN')){
             redirect('dashboard');
         }
-    }
-
-    public function index(){
-        
         //change the layouts to layouts login
         $this->template->set_layout_path('');
         $this->template->set_layout_name('login');
@@ -40,6 +39,10 @@ class Login extends MY_Controller{
                         $this->session->set_userdata('USERNAME',$login['data']->USERNAME);
                         $this->session->set_userdata('ROLE_NAME',$login['data']->ROLE_NAME);
                         $this->session->set_userdata('LOGGEDIN', TRUE);
+
+                        //update roles
+                        $this->load->model('acl/resources_model');
+                        $this->resources_model->update_roles();  
                         
                         //redirect if logged in
                         redirect("dashboard");
@@ -65,5 +68,15 @@ class Login extends MY_Controller{
         }
         
         $this->template->build('', $data);
+    }
+
+    public function logout()
+    {
+        $this->activity_log->write_log($this->session->userdata('USERNAME'), 'Logout Success');
+
+        //clear session
+        $this->session->sess_destroy();
+        
+        redirect('auth/login');
     }
 }

@@ -6,8 +6,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Gentelella Alela! | </title>
+    
+    <title><?= $title ?></title>
 
     <!-- Bootstrap -->
     <link href="<?php echo base_url('assets')?>/node_modules/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -32,13 +32,21 @@
           <section class="login_content">
             <form method='POST' action ="">
               <h1>Login Form</h1>
+              <?php if($this->session->flashdata('ERROR')):?>
+                <div class="alert alert-danger" role="alert">
+                  <?= $this->session->flashdata('ERROR') ?>
+                </div>
+              <?php endif; ?>
               <div>
-                <input name='username' type="text" class="form-control" placeholder="Username" required="" />
+                <input name='username' type="text" class="form-control" placeholder="Username" value='<?= $content_data['username'] ?>' required/>
               </div>
               <div>
-                <input name='password' type="password" class="form-control" placeholder="Password" required="" />
+                <input name='password' type="password" class="form-control" placeholder="Password" value='<?= $content_data['pass'] ?>' required />
               </div>
               <div>
+                <a href="<?= base_url() ?>">
+                  <button class="btn btn-danger mr-2" type='button'>Back</button>
+                </a>
                 <button class="btn btn-default submit" type='submit'>Log in</button>
                 <a class="reset_pass" href="#">Lost your password?</a>
               </div>
@@ -54,8 +62,8 @@
                 <br />
 
                 <div>
-                  <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                  <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                  <h1><i class="fa fa-paw"></i>ROKET UMKM</h1>
+                  <p>©2020 All Rights Reserved. E-Marketplace B2B UMKM Desa Cibogo</p>
                 </div>
               </div>
             </form>
@@ -90,8 +98,8 @@
                 <br />
 
                 <div>
-                  <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                  <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                  <h1><i class="fa fa-paw"></i>ROKET UMKM</h1>
+                  <p>©2020 All Rights Reserved. E-Marketplace B2B UMKM Desa Cibogo</p>
                 </div>
               </div>
             </form>
