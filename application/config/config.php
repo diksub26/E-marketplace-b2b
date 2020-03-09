@@ -529,3 +529,4 @@ $config['proxy_ips'] = '';
  */
 
  require_once('template.php');
+ require_once('navigation.php');
