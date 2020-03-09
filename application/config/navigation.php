@@ -5,6 +5,11 @@
  */
 
  $config['navigation'] = array(
+    'dashboard' => array(
+        'title' => 'Dashboard',
+        'icon' => 'fa fa-dashboard',
+        'uri' => 'dashboard'
+    ),
      'kelola_data' => array(
         'title' => 'Kelola data',
         'icon' => 'fa fa-list',
@@ -14,11 +19,5 @@
                 'title' => 'Kelola Data Barang',
             )
         )
-            ),
-
-     'dashboard' => array(
-        'title' => 'Dashboard',
-        'icon' => 'fa fa-list',
-        'uri' => 'dashboard'
-     )
+    ),
  );
