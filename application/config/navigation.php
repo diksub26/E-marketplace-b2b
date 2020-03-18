@@ -10,13 +10,23 @@
         'icon' => 'fa fa-dashboard',
         'uri' => 'dashboard'
     ),
-     'kelola_data' => array(
+    'kelola_data' => array(
         'title' => 'Kelola data',
         'icon' => 'fa fa-list',
         'children' => array(
-            'kelola_data-kelola_data_barang' => array(
-                'uri' => 'kelola_data/kelola_data_barang',
-                'title' => 'Kelola Data Barang',
+            'kelola_data-kelola_produk' => array(
+                'uri' => 'kelola_data/kelola_produk',
+                'title' => 'Kelola Produk',
+            )
+        )
+    ),
+    'managament_menu' => array(
+        'title' => 'Kelola Menu',
+        'icon' => 'fa fa-cog',
+        'children' => array(
+            'managament_menu-rules' => array(
+                'uri' => 'managament_menu/rules',
+                'title' => 'Kelola Rules Menu',
             )
         )
     ),

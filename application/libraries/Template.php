@@ -63,6 +63,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         private $css = array();
 
         /**
+         * Property for list js file
+         * You can set, on $config['template']['css_list'] at config
+         * This can help if you have dynamic css file
+         * @var string
+         */
+        private $css_list = array();
+
+        /**
          * Property for js header file
          * You can set, on $config['template']['js_header'] at config
          * 
@@ -87,8 +95,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         private $js_list = array();
 
         /**
-         * If you're set true, you should manually call $get_js on view
+         * If you're set false, you should manually call $template['js'] on view
          * You can set, on $config['template']['auto_js_location'] at config
+         * or on set_auto_js method
          * 
          * @var string
          */
@@ -175,6 +184,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         /**
+         * method for add CSS File Mannually
+         * this method use $this->assets_path
+         * 
+         * @param $css array or string
+         * @return Template
+         */
+        public function add_css($css_key){
+            if(is_string($css_key)){
+                foreach($this->css_list[$css_key] as $val){
+                    $this->css[] = base_url().$this->assets_path.'/'.$val;
+                }
+            }else if(is_array($css_key)){
+                foreach($css_key as $key){
+                    foreach($this->css_list[$key] as $val){
+                        $this->css[] = base_url().$this->assets_path.'/'.$val;
+                    }
+                }
+            }
+            return $this;
+        }
+
+        /**
          * Set Config Template
          * 
          * @param $config
@@ -207,14 +238,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         /**
-         * get JS File list
+         * set auto js location
          *  Use this method if auto_js_location is false
          * 
-         * @param $config
+         * @param boolean $auto_js_location
          * @return Template
          */
-        protected function get_js(){
-            return $this->js;
+        public function set_auto_js($auto_js_location){
+            
+            if(is_bool($auto_js_location)){
+                $this->auto_js_location = $auto_js_location;
+            }
+            return $this;
         }
 
         /**
@@ -224,20 +259,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          * @param $js array or string
          * @return Template
          */
-        public function add_js($js){
-            if(is_string($js)){
-                $this->js[] = $js;
-            }else if(is_array($js)){
-                foreach($js as $jskey => $jsvalue)
-                {
-                    if (is_numeric($jskey)){
-                        if(isset($this->js_list[$jskey])){
-                            $this->js[$jskey] = $this->js_list[$jskey];                            
-                        }else{
-                            $this->js[] = $jsvalue;
-                        }
-                    }else{
-                        $this->js[$jskey] = $jsvalue;
+        public function add_js($js_key){
+            if(is_string($js_key)){
+                foreach($this->js_list[$js_key] as $val){
+                    $this->js[] = base_url().$this->assets_path.'/'.$val;
+                }
+            }else if(is_array($js_key)){
+                foreach($js_key as $key){
+                    foreach($this->js_list[$key] as $val){
+                        $this->js[] = base_url().$this->assets_path.'/'.$val;
                     }
                 }
             }
@@ -312,13 +342,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         /**
+         * this method to get asset path
+         * @param no param
+         * @return assets path
+         */
+        public function get_assets_path()
+        {
+            return $this->assets_path;
+        }
+
+        /**
          * this method for mapping navigation
          * 
          * @param no params
          * @return array navigation from config menu,which has acl allowed
          * 
          */
-
         private function _mapping_navigation(){
             if($this->ci->config->item('navigation')){
                 $menus = $this->ci->config->item('navigation');
@@ -375,10 +414,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $template['js_header'] = $this->js_header;
             $template['content'] = $content;
             $template['navbar'] = $this->_mapping_navigation();
-            if($this->auto_js_location != false || empty($this->auto_js_location)){
+            $template['auto_js'] = $this->auto_js_location;
+
+            if($this->auto_js_location == false){
+                $js_list = '' ;
+                foreach($this->js as $value){
+                    $js_list .= '<script src="'.$value.'"></script>';
+                    $template['js'] = $js_list;
+                }
+            }else{
                 $template['js'] = $this->js;
             }
-
+            
             $data['content_data'] = $content_data; 
             $data['template'] = $template; 
             $data['title'] = (!empty($this->title) ? $this->base_title.$this->title_separator.$this->title : $this->base_title); 

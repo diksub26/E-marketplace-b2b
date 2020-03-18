@@ -12,6 +12,7 @@ class Resources_model extends CI_Model
     private function _get_resources()
     {
         if(!$this->session->userdata('ROLES_MENU')){
+            $this->db->trans_start();
             $procedure_name = "CALL getResourcesMenu(?)";
             $roles = ( $this->session->userdata('USERNAME')  ? $this->session->userdata('USERNAME') : 'GUEST');
             $params = array($roles);
@@ -20,6 +21,7 @@ class Resources_model extends CI_Model
             if($query){
                 $this->session->set_userdata('ROLES_MENU',$query);
             }
+            $this->db->trans_complete();
         }
 
     }
