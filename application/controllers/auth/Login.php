@@ -36,6 +36,7 @@ class Login extends MY_Controller{
 
                     $login = $this->model->login($post);
                     if($login['status'] == 'SUCCESS'){
+                        $this->session->set_userdata('ID',$this->encryption->encrypt($login['data']->ID));
                         $this->session->set_userdata('USERNAME',$login['data']->USERNAME);
                         $this->session->set_userdata('ROLE_NAME',$login['data']->ROLE_NAME);
                         $this->session->set_userdata('LOGGEDIN', TRUE);

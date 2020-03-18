@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Login_Model extends CI_Model 
+class Login_Model extends MY_Model 
 {
     public function __construct() {
         parent::__construct();
@@ -114,7 +114,7 @@ class Login_Model extends CI_Model
                 $login_data = array('status' => 'SUCCESS', 'msg' => 'BERHASIL LOGIN KE SISTEM','data' => $data_username);
                 $this->activity_log->write_log($data_username->USERNAME, 'Login Berhasil');
             }else{
-                $login_data = array('msg' => 'GAGAL MELAKUKAN LOGIN');
+                $login_data['msg'] = 'GAGAL MELAKUKAN LOGIN';
             }
         }
 
@@ -141,11 +141,10 @@ class Login_Model extends CI_Model
         $this->db->from($this->table_password);
         $this->db->where(array('USER_ID'=> $user_id));
         $query =  $this->db->get()->row();
-
-        if($query->PASSWORD){
+        if($query){
             //hashing password from user input
             $password_hash = password_hash($password, PASSWORD_BCRYPT);
-
+            
             $vertify_pass = password_verify ( $password , $password_hash );
             log_message('debug',"Password has been verify result : $vertify_pass");
         }
