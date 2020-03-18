@@ -2,7 +2,7 @@
 class Dashboard extends MY_Controller{
     public function __construct() {
         parent::__construct();
-        $this->template->set_title('Dashboard');
+        $this->set_title('Dashboard');
     }
 
     public function index(){
