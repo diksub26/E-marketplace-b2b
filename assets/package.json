@@ -4,7 +4,10 @@
   "description": "front end",
   "main": "index.js",
   "dependencies": {
-    "gentelella": "^1.4.0"
+    "gasparesganga-jquery-loading-overlay": "^2.1.6",
+    "gentelella": "^1.4.0",
+    "select2": "^4.0.13",
+    "sweetalert2": "^9.10.2"
   },
   "devDependencies": {},
   "scripts": {
