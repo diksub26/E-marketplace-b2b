@@ -65,17 +65,16 @@
                                     </a>
 
                                     <?php if($has_children):?>
-                                    <?php foreach($nav_lvl_1['children'] as $nav_lvl_2):?>
-                                    <?php $uri_arr = explode('/',$nav_lvl_2['uri']); ?>
-                                    <ul class="nav child_menu"
-                                        style="<?php echo ( $this->uri->segment(2) == $uri_arr[1] ? 'display: block;': "")?>">
-                                        <li
-                                            class='<?php echo ( $this->uri->segment(2) == $uri_arr[1] ? 'current-page': "")?>'>
-                                            <a
-                                                href="<?php echo (isset($nav_lvl_2['uri']) ? site_url($nav_lvl_2['uri']) : '#') ?>"><?php echo $nav_lvl_2['title'] ?></a>
-                                        </li>
-                                    </ul>
-                                    <?php endforeach;?>
+                                        <ul class="nav child_menu" style="<?php echo ( $this->uri->segment(1) == $key ? 'display: block;': "")?>">
+                                        <?php foreach($nav_lvl_1['children'] as $nav_lvl_2):?>
+                                        <?php $uri_arr = explode('/',$nav_lvl_2['uri']);?>
+                                            <li
+                                                class='<?php echo ( $this->uri->segment(2) == $uri_arr[1] ? 'current-page': "")?>'>
+                                                <a
+                                                    href="<?php echo (isset($nav_lvl_2['uri']) ? site_url($nav_lvl_2['uri']) : '#') ?>"><?php echo $nav_lvl_2['title'] ?></a>
+                                            </li>
+                                            <?php endforeach;?>
+                                        </ul>
                                     <?php endif;?>
                                 </li>
                                 <?php endforeach;?>
@@ -245,7 +244,7 @@
         </div>
 
         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div id='modal-dialog' class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalLabel">My Modal</h5>

@@ -47,7 +47,7 @@ class My_Acl
 
     public function is_allowed($resource)
     {
-        if($this->CI->uri->uri_string() == ''){
+        if($this->CI->uri->uri_string() == '' || $this->CI->uri->uri_string() == 'landing_page'){
             return TRUE;
         }
 

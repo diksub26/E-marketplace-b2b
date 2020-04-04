@@ -32,7 +32,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $this->my_acl->acl_init();
         $allowed =  $this->my_acl->is_allowed($this->uri->uri_string());
         if(!$allowed){
-            redirect('auth/login');
+            redirect('landing_page');
         }        
     }
 

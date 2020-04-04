@@ -10,6 +10,8 @@ $config['template']['css'] = array(
     'node_modules/gentelella/vendors/font-awesome/css/font-awesome.css',
     'node_modules/gentelella/vendors/iCheck/skins/flat/green.css',
     'node_modules/gentelella/vendors/nprogress/nprogress.css',
+    'node_modules/gentelella/vendors/pnotify/dist/pnotify.css',
+    'node_modules/gentelella//vendors/pnotify/dist/pnotify.buttons.css',
     'node_modules/gentelella/build/css/custom.min.css',
     );
 
@@ -24,7 +26,9 @@ $config['template']['js'] = array(
     'node_modules/gentelella/vendors/fastclick/lib/fastclick.js',
     'node_modules/gentelella/vendors/nprogress/nprogress.js',
     'node_modules/gentelella/vendors/iCheck/icheck.min.js',
-    'node_modules/gentelella/build/js/custom.min.js',
+    'node_modules/gentelella/vendors/pnotify/dist/pnotify.js',
+    'node_modules/gentelella/vendors/pnotify/dist/pnotify.buttons.js',
+    'node_modules/gentelella/build/js/custom.js',
 );
 
 $config['template']['js_list'] = array(

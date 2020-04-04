@@ -24,9 +24,17 @@
         'title' => 'Kelola Menu',
         'icon' => 'fa fa-cog',
         'children' => array(
+            'managament_menu-resources' => array(
+                'uri' => 'managament_menu/resources',
+                'title' => 'Kelola Resources Menu',
+            ),
             'managament_menu-rules' => array(
                 'uri' => 'managament_menu/rules',
                 'title' => 'Kelola Rules Menu',
+            ),        
+            'managament_menu-roles' => array(
+                'uri' => 'managament_menu/roles',
+                'title' => 'Kelola Roles Menu',
             )
         )
     ),

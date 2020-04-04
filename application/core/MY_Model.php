@@ -44,22 +44,52 @@ class MY_Model extends CI_Model
 
     }
 
-    protected function _build_data_tables($table, $where='', $select=''){
+    protected function update($table,$id, $data)
+    {
+        // $this->db->where($id);
+        return $this->db->update($table, $id, $data);
+    }
+
+    /**
+     * @param $table string
+     * @param $where standart where codeigniter
+     * @param $select standart select codeigniter
+     * @param $join array([] => array('table',condition','join(standart ci)'));
+     * 
+     * @return json for data tables
+     */
+
+    protected function _build_data_tables($table, $where='', $select='', $join = array()){
 
         $output = array( 
             "draw" => $this->input->post('draw'),
             "recordsTotal" => $this->_count_all($table,$where,$select),
-            "recordsFiltered" => $this->_dt_count_filtered($table, $where,$select),
-            "data" => $this->_data_tables_basic($table,$where,$select),
+            "recordsFiltered" => $this->_dt_count_filtered($table, $where,$select,$join),
+            "data" => $this->_data_tables_basic($table,$where,$select,$join),
         );
 
         //output dalam format JSON
         echo json_encode($output);
     }
  
-    protected function _count_all($table, $where='',$select='')
+    protected function _count_all($table, $where='',$select='' , $join = array())
     {
         $this->db->from($table);
+
+        if(!empty($join)){
+            foreach($join as $val){
+                if(isset($val['table']) && isset($val['condition'])){
+                    if(isset($val['join'])){
+                        $this->db->join($val['table'], $val['condition'],$val['join']);
+                    }else{
+                        $this->db->join($val['table'], $val['condition']);
+                    }
+                }else{
+                    log_message('Error', 'wrong param for joining table (data table)');
+                    show_error('WRONG PARAM FOR JOINING TABLE ("DATA TABLE)',500,'MODEL ERROR');
+                }
+            }
+        }
 
         if(!empty($select)){
             $this->db->select($select);
@@ -72,13 +102,39 @@ class MY_Model extends CI_Model
         return $this->db->count_all_results();
     }
 
+
+
+    
     #=================================================== Private Method ===========================================================================#
 
     /* Method for data tables*/
-    private function _data_table_basic_query($table, $where = '',$select){
+
+    /**
+     * @param $table string
+     * @param $where standart where codeigniter
+     * @param $select standart select codeigniter
+     * @param $join array([] => array('table',condition','join(standart ci)'));
+     */
+
+    private function _data_table_basic_query($table, $where = '',$select,$join = array()){
         $post = $this->input->post();
         
         $this->db->from($table);
+
+        if(!empty($join)){
+            foreach($join as $val){
+                if(isset($val['table']) && isset($val['condition'])){
+                    if(isset($val['join'])){
+                        $this->db->join($val['table'], $val['condition'],$val['join']);
+                    }else{
+                        $this->db->join($val['table'], $val['condition']);
+                    }
+                }else{
+                    log_message('Error', 'wrong param for joining table (data table)');
+                    show_error('WRONG PARAM FOR JOINING TABLE ("DATA TABLE)',500,'MODEL ERROR');
+                }
+            }
+        }
 
         if(!empty($select)){
             $this->db->select($select);
@@ -119,11 +175,11 @@ class MY_Model extends CI_Model
         } 
     }
 
-    private function _data_tables_basic($table, $where ='',$select=''){
+    private function _data_tables_basic($table, $where ='',$select='',$join=array()){
 
         $post = $this->input->post();
-
-        $this->_data_table_basic_query($table, $where,$select);
+        
+        $this->_data_table_basic_query($table, $where,$select,$join);
         if($post['length'] != -1){
             $this->db->limit($post['length'], $post['start']);
         }
@@ -132,10 +188,10 @@ class MY_Model extends CI_Model
         return $query->result();
     }
 
-    private function _dt_count_filtered($table, $where ='',$select='')
+    private function _dt_count_filtered($table, $where ='',$select='',$join=array())
     {
 
-        $this->_data_table_basic_query($table, $where,$select);
+        $this->_data_table_basic_query($table, $where,$select,$join);
         $query = $this->db->get();
         return $query->num_rows();
     }
