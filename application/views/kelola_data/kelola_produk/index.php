@@ -44,6 +44,7 @@
       "serverSide": true,
       "ajax": {
           "url" : "<?= base_url().$this->module.'/data_tables'?>",
+          "data" : { <?= $csrf['name']; ?> : "<?= $csrf['hash']; ?>" },
           "type" : "POST"
       },
       "columns": [
@@ -75,7 +76,7 @@ function get_detail(data,btn){
         url : module_url + '/getDetailProduk',
         type: "POST",
         dataType: 'JSON',
-        data : {'ID_PRODUK' : data},
+        data : {<?= $csrf['name']; ?> : "<?= $csrf['hash']; ?>", 'ID_PRODUK' : data},
         success : function(data){
           if(data.status != "ERROR"){
             $.each(data.msg,function(index, val){

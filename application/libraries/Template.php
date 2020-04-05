@@ -410,6 +410,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          */
         public function build($content, $content_data = array()){
             
+            // if(){
+                $csrf = array(
+                    'name' => $this->ci->security->get_csrf_token_name(),
+                    'hash' => $this->ci->security->get_csrf_hash()
+                );
+
+                $data['csrf'] = $csrf;
+            // }
+
             $template['css'] = $this->css;
             $template['js_header'] = $this->js_header;
             $template['content'] = $content;

@@ -12,12 +12,14 @@ $config['template']['css'] = array(
     'node_modules/gentelella/vendors/nprogress/nprogress.css',
     'node_modules/gentelella/vendors/pnotify/dist/pnotify.css',
     'node_modules/gentelella//vendors/pnotify/dist/pnotify.buttons.css',
+    'node_modules/sweetalert2/dist/sweetalert2.all.min.css',
     'node_modules/gentelella/build/css/custom.min.css',
     );
 
 $config['template']['js_header'] = array(
     'node_modules/gentelella/vendors/jquery/dist/jquery.min.js',
     'node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.min.js',
+    'node_modules/sweetalert2/dist/sweetalert2.all.min.js',
     'js/main.js',
 );
 

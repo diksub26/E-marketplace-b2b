@@ -39,5 +39,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     public function set_title($title){
         $this->template->set_title($title);
     }
+
+    protected function checkAjaxRequest(){
+        if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
+        {    
+            return true;   
+        }else{
+            show_404();
+            exit();
+        }   
+    }
  }
  

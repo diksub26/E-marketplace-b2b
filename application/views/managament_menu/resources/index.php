@@ -32,14 +32,16 @@
 <script>
     //variabel global
     var module_url = "<?= base_url().$this->module?>";
-     
+    csrf_token = "<?= $csrf['hash']; ?>";
+    csrf_name = "<?= $csrf['name']; ?>";
+
     var tabelResources = $('#tblResources').DataTable({
          "processing": true,
          "ordering" : true,
          "serverSide": true,
          "ajax": {
              "url" : "<?= base_url().$this->module.'/data_tables'?>",
-             "type" : "POST"
+             "type" : "GET"
          },
          "columns": [
              {"render" : render_id_dt},
@@ -47,12 +49,12 @@
              { "name": "resources", "data" : "resources"},
              { "name": "USERNAME", "data" : "USERNAME"},
              { "data" : "id_menu","render" : render_act,"className" : 'text-center'}
-            ]
+            ],
     });
 
     function render_act(data, type, row, meta){
         act = "<button class=\"btn btn-xs btn-primary\" onClick=get_detail("+data+",this) title='Detail/Update'><i class='fa fa-edit'></i></button> ";
-        act += "<button class=\"btn btn-xs btn-danger\" onClick=delete("+data+",this) title='Hapus Data'><i class='fa fa-trash'></i></button> ";
+        act += "<button class=\"btn btn-xs btn-danger\" onClick=deleteData("+data+",this) title='Hapus Data'><i class='fa fa-trash'></i></button> ";
         return act;
     }
 
@@ -62,7 +64,7 @@
         clear_modal();
         $('.modal-title').html('<i class="fa fa-edit"></i> Tambah Data');
         $('.modal-body').load(module_url + "/getForm");
-        $('.modal-footer').append('<button type="button" class="btn btn-success" id="btnSave" onClick="saveData()"><i class="fa fa-save"></i> Simpan</button>');
+        $('.modal-footer').append('<button type="button" class="btn btn-success" id="btnSave" onClick="saveData(this)"><i class="fa fa-save"></i> Simpan</button>');
         $('.modal-dialog').removeClass('modal-lg');
         $('#modal').modal({
             'backdrop' : "static",
@@ -80,17 +82,21 @@
         $('.modal-title').html('<i class="fa fa-edit"></i> Detail Data Produk');
         $('.modal-dialog').removeClass('modal-lg');
         $('.modal-body').load(module_url + "/getForm",function(){
+        csrf_token = $('#form-data > input[name = "'+csrf_name+'"').val();
         $.ajax({
             url : module_url + '/getDetailResources',
             type: "POST",
             dataType: 'JSON',
-            data : {'id_menu' : data},
+            data : { 'id_menu' : data, <?= $csrf['name']; ?> : csrf_token },
             success : function(data){
-            if(data.status != "ERROR"){
-                $.each(data.msg,function(index, val){
-                    $('#'+index).val(val);
-                })
-            }
+                if(data.status != "ERROR"){
+                    $.each(data.msg,function(index, val){
+                        $('#'+index).val(val);
+                    })
+                    $('#form-data > input[name = "'+data.csrf.name+'"').val(data.csrf.hash);
+                    csrf_name = data.csrf.name;
+                    csrf_token = data.csrf.hash;
+                }
             }
         });      
         });
@@ -112,7 +118,7 @@
         let button = $(btn).html();
         $(btn).html("<i class='fa fa-spinner fa-spin'></i>Loading");
         
-        let formData = $('#form-add').serializeArray();
+        let formData = $('#form-data').serializeArray();
         formData.push({name : 'id_menu',value : data});
 
         $.ajax({
@@ -122,20 +128,57 @@
             data : formData,
             success : function(data){
                 if(data.status != "ERROR"){
-
-                    $(btn).html(button);
                     $('#modal').modal('hide');
-                    new PNotify({
-                        title: data.status,
-                        text: data.msg,
-                        type: 'success',
-                        styling: 'bootstrap3'
-                    });
+                    showNotify(data.status,data.msg,'success');
 
                     tabelResources.ajax.reload();
+                }else{
+                    showNotify(data.status,data.msg,'error');
                 }
+                $(btn).html(button);
             }
         });
         modal_overlay_hide();
+    }
+
+    function saveData(btn){
+        modal_overlay();
+
+        let button = $(btn).html();
+        $(btn).html("<i class='fa fa-spinner fa-spin'></i>Loading");
+        
+        let formData = $('#form-data').serializeArray();
+
+        $.ajax({
+            url : module_url + '/save',
+            type: "POST",
+            dataType: 'JSON',
+            data : formData,
+            success : function(data){
+                if(data.status != "ERROR"){
+                    $('#modal').modal('hide');
+                    showNotify(data.status,data.msg,'success');
+                    csrf_name = data.csrf.name;
+                    csrf_token = data.csrf.hash;
+
+                    tabelResources.ajax.reload();
+                }else{
+                    showNotify(data.status,data.msg,'error');
+                }
+                $(btn).html(button);
+            }
+        });
+        modal_overlay_hide();
+    }
+
+    function deleteData(data, btn) {
+        let dataDel = { 'id_menu' : data, 'roket' : csrf_token };
+        let url = '/delete';
+        let button = $(btn).html();
+
+        $(btn).html("<i class='fa fa-spinner fa-spin'></i>Loading");
+        confirmDelete(dataDel,url);
+
+        $(btn).html(button);
     }
 </script>

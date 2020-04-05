@@ -3,7 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Model extends CI_Model 
 {
-    
+    protected $table;
+    protected $pk = 'id';
+
     public function __construct() {
         parent::__construct();
     }
@@ -44,10 +46,100 @@ class MY_Model extends CI_Model
 
     }
 
-    protected function update($table,$id, $data)
+    public function update($id, $data)
     {
-        // $this->db->where($id);
-        return $this->db->update($table, $id, $data);
+        $csrf = array(
+            'name' => $this->security->get_csrf_token_name(),
+            'hash' => $this->security->get_csrf_hash()
+        );
+
+        $resp = array(
+            'status' => 'SUCCESS',
+            'msg' => 'DATA BERHASIL DIUPDATE',
+            'csrf' => (object) $csrf
+        );
+
+        $this->db->trans_begin();
+        $this->db->update($this->table, $data, $id);
+        if ($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+
+            log_message('Error', $this->db->error());
+            $resp['status'] = 'ERROR';
+            $resp['msg'] = 'KESALAHAN DALAM UPDATE DATA';    
+        }
+        else
+        {
+            $this->db->trans_commit();
+        }   
+
+        
+        return $resp;
+    }
+
+    public function insert($data)
+    {
+        $csrf = array(
+            'name' => $this->security->get_csrf_token_name(),
+            'hash' => $this->security->get_csrf_hash()
+        );
+
+        $resp = array(
+            'status' => 'SUCCESS',
+            'msg' => 'DATA BERHASIL DISIMPAN',
+            'csrf' => (object) $csrf
+        );
+
+        $this->db->trans_begin();
+        $this->db->insert($this->table, $data);
+        if ($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+
+            log_message('Error', $this->db->error());
+            $resp['status'] = 'ERROR';
+            $resp['msg'] = 'DATA GAGAL DISIMPAN';    
+        }
+        else
+        {
+            $this->db->trans_commit();
+        }   
+
+        
+        return $resp;
+    }
+
+    public function delete($data)
+    {
+        $csrf = array(
+            'name' => $this->security->get_csrf_token_name(),
+            'hash' => $this->security->get_csrf_hash()
+        );
+
+        $resp = array(
+            'status' => 'SUCCESS',
+            'msg' => 'DATA BERHASIL DIHAPUS',
+            'csrf' => (object) $csrf
+        );
+
+        $this->db->trans_begin();
+        $this->db->delete($this->table, $data);
+        if ($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+
+            log_message('Error', $this->db->error());
+            $resp['status'] = 'ERROR';
+            $resp['msg'] = 'DATA GAGAL DIHAPUS';    
+        }
+        else
+        {
+            $this->db->trans_commit();
+        }   
+
+        
+        return $resp;
     }
 
     /**
@@ -62,7 +154,7 @@ class MY_Model extends CI_Model
     protected function _build_data_tables($table, $where='', $select='', $join = array()){
 
         $output = array( 
-            "draw" => $this->input->post('draw'),
+            "draw" => $this->input->get('draw'),
             "recordsTotal" => $this->_count_all($table,$where,$select),
             "recordsFiltered" => $this->_dt_count_filtered($table, $where,$select,$join),
             "data" => $this->_data_tables_basic($table,$where,$select,$join),
@@ -117,7 +209,7 @@ class MY_Model extends CI_Model
      */
 
     private function _data_table_basic_query($table, $where = '',$select,$join = array()){
-        $post = $this->input->post();
+        $get = $this->input->get();
         
         $this->db->from($table);
 
@@ -143,21 +235,21 @@ class MY_Model extends CI_Model
         if(!empty($where)){
             $this->db->where($where);
         }
-        $column = $post['columns'];
+        $column = $get['columns'];
 
         $x = 0;
         foreach ($column as $item) {
-            if(isset($post['search']['value'])){
+            if(isset($get['search']['value'])){
 
                 if(!empty($item['name'])){
                     if($x===0) // looping awal
                     {
                         $this->db->group_start(); 
-                        $this->db->like($item['name'], $post['search']['value']);
+                        $this->db->like($item['name'], $get['search']['value']);
                     }
                     else
                     {
-                        $this->db->or_like($item['name'], $post['search']['value']);
+                        $this->db->or_like($item['name'], $get['search']['value']);
                     }
      
                     if(count($column) - 1 == $x) 
@@ -169,19 +261,19 @@ class MY_Model extends CI_Model
             $x++;
         }
 
-        if(isset($post['order'])) 
+        if(isset($get['order'])) 
         {
-            $this->db->order_by($post['order']['0']['column'], $post['order']['0']['dir']);
+            $this->db->order_by($get['order']['0']['column'], $get['order']['0']['dir']);
         } 
     }
 
     private function _data_tables_basic($table, $where ='',$select='',$join=array()){
 
-        $post = $this->input->post();
+        $get = $this->input->get();
         
         $this->_data_table_basic_query($table, $where,$select,$join);
-        if($post['length'] != -1){
-            $this->db->limit($post['length'], $post['start']);
+        if($get['length'] != -1){
+            $this->db->limit($get['length'], $get['start']);
         }
 
         $query = $this->db->get();

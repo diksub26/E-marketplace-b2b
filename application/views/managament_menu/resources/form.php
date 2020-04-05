@@ -1,6 +1,7 @@
 <div class="container-fluid">
     <div class="row">
-        <form method="post" id='form-add'>
+        <form method="post" id='form-data'>
+        <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
             <div class="form-group row">
                 <label for="menu" class="control-label col-md-4 col-sm-4 col-xs-12">Nama Menu</label>
                 <div class="col-md-8 col-sm-8 col-xs-12">
