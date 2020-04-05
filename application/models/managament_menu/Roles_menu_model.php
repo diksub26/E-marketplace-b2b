@@ -4,18 +4,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Roles_menu_model extends MY_Model
 {
 
-    private $table = 'roles_menu';
     private $table_login = 'login';
 
     public function __construct() {
         parent::__construct();
+        $this->table = 'roles_menu';
+        $this->pk = 'id_roles_menu';
     }
 
     public function get_data_tables()
     {
         // param for data table
         $join = array();
-        $select = 'id_menu, menu, resources, parent, login.USERNAME';
+        $select = 'id_roles_menu, roles_name, login.USERNAME';
 
         $join[] = [
             'table' => $this->table_login,
@@ -32,7 +33,7 @@ class Roles_menu_model extends MY_Model
             'msg' => 'DATA TIDAK DITEMUKAN',
         );
 
-        $query = $this->_get_data($this->table,$id);
+        $query = $this->_get_data($this->table,array($this->pk => $id));
         if($query){
             $resp['status'] = 'SUCCESS';
             $resp['msg'] = $query->row();

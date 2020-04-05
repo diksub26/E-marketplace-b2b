@@ -6,7 +6,7 @@ class Roles extends MY_Controller
     public function __construct() {
         parent::__construct();
 
-        $this->module = 'managament_menu/Roles';
+        $this->module = 'managament_menu/roles';
 
         //model
         $this->load->model($this->module.'_menu_model');
@@ -17,14 +17,15 @@ class Roles extends MY_Controller
 
     public function index()
     {
-        // $this->template->set_auto_js(false);
-        // $this->template->add_js(array('data_table','switchery','select2'));
-        // $this->template->add_css(array('data_table','switchery','select2'));
+        $this->template->set_auto_js(false);
+        $this->template->add_js(array('data_table'));
+        $this->template->add_css(array('data_table'));
         $this->template->build($this->module.'/index');
     }
 
     public function data_tables()
     {
+        $this->checkAjaxRequest();
         $data_tables =  $this->roles_menu_model->get_data_tables();
 
         echo $data_tables;
@@ -32,29 +33,73 @@ class Roles extends MY_Controller
 
     public function getForm()
     {
-        $this->load->view($this->module.'/form');
+        $this->checkAjaxRequest();
+        $csrf = array(
+            'name' => $this->security->get_csrf_token_name(),
+            'hash' => $this->security->get_csrf_hash()
+        );
+
+        $data['csrf'] = $csrf;
+        $this->load->view($this->module.'/form', $data);
     }
 
-    public function getDetailroles()
+    public function getDetailResources()
     {
-        $post = $this->input->post();
+        $this->checkAjaxRequest();
+        $id = $this->input->post('id_roles_menu');
 
-        echo json_encode($this->roles_menu_model->get_data_by_id($post));
+        $data = $this->roles_menu_model->get_data_by_id($id);
+
+        $csrf = array(
+            'name' => $this->security->get_csrf_token_name(),
+            'hash' => $this->security->get_csrf_hash()
+        );
+
+        $data['csrf'] = (object) $csrf;
+
+        echo json_encode($data);
     }
 
     public function update()
     {
+        $this->checkAjaxRequest();
         $id = [
-            'id_menu' => $this->input->post('id_menu')
+            'id_roles_menu' => $this->input->post('id_roles_menu')
         ];
 
         $data = [
-            'menu' => $this->input->post('menu'),
-            'roles' => $this->input->post('roles'),
+            'roles_name' => $this->input->post('roles_name'),
             'updated_by' => $this->encryption->decrypt($this->session->userdata('ID'))
         ];
 
-        $update = $this->roles_menu_model->updateData($id,$data);
+        $update = $this->roles_menu_model->update($id,$data);
         echo json_encode($update);
+    }
+
+
+    public function save()
+    {
+        $this->checkAjaxRequest();
+        $data = [
+            'roles_name' => $this->input->post('roles_name'),
+            'created_by' => $this->encryption->decrypt($this->session->userdata('ID')),
+            'updated_by' => $this->encryption->decrypt($this->session->userdata('ID'))
+        ];
+
+        $save = $this->roles_menu_model->insert($data);
+        echo json_encode($save);
+    }
+
+    public function delete()
+    {
+        $this->checkAjaxRequest();
+        $data = [
+            'id_roles_menu' => $this->input->post('id_roles_menu')
+        ];
+
+        $delete = $this->roles_menu_model->delete($data);
+
+        echo json_encode($delete);
+        
     }
 }

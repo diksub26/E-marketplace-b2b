@@ -82,23 +82,26 @@
         $('.modal-title').html('<i class="fa fa-edit"></i> Detail Data Produk');
         $('.modal-dialog').removeClass('modal-lg');
         $('.modal-body').load(module_url + "/getForm",function(){
-        csrf_token = $('#form-data > input[name = "'+csrf_name+'"').val();
-        $.ajax({
-            url : module_url + '/getDetailResources',
-            type: "POST",
-            dataType: 'JSON',
-            data : { 'id_menu' : data, <?= $csrf['name']; ?> : csrf_token },
-            success : function(data){
-                if(data.status != "ERROR"){
-                    $.each(data.msg,function(index, val){
-                        $('#'+index).val(val);
-                    })
-                    $('#form-data > input[name = "'+data.csrf.name+'"').val(data.csrf.hash);
-                    csrf_name = data.csrf.name;
-                    csrf_token = data.csrf.hash;
-                }
-            }
-        });      
+            csrf_token = $('#form-data > input[name = "'+csrf_name+'"').val();
+            $.ajax({
+                url : module_url + '/getDetailResources',
+                type: "POST",
+                dataType: 'JSON',
+                data : { 'id_menu' : data, <?= $csrf['name']; ?> : csrf_token },
+                success : function(data){
+                    if(data.status != "ERROR"){
+                        $.each(data.msg,function(index, val){
+                            $('#'+index).val(val);
+                        })
+                        $('#form-data > input[name = "'+data.csrf.name+'"').val(data.csrf.hash);
+                        csrf_name = data.csrf.name;
+                        csrf_token = data.csrf.hash;
+                    }
+                },
+                error: function () {
+                    showNotify('Error','Whoops, something when wrong on our servers','error');  
+                }   
+            });      
         });
     
         $('.modal-footer').append('<button type="button" class="btn btn-primary" id="btnUpdate" onClick="updateData('+data+',this)"><i class="fa fa-edit"></i> Update</button>');
@@ -136,7 +139,10 @@
                     showNotify(data.status,data.msg,'error');
                 }
                 $(btn).html(button);
-            }
+            },
+            error: function () {
+              showNotify('Error','Whoops, something when wrong on our servers','error');  
+            } 
         });
         modal_overlay_hide();
     }
@@ -166,7 +172,10 @@
                     showNotify(data.status,data.msg,'error');
                 }
                 $(btn).html(button);
-            }
+            },
+            error: function () {
+              showNotify('Error','Whoops, something when wrong on our servers','error');  
+            } 
         });
         modal_overlay_hide();
     }
@@ -178,7 +187,7 @@
 
         $(btn).html("<i class='fa fa-spinner fa-spin'></i>Loading");
         confirmDelete(dataDel,url);
-
+        tabelResources.ajax.reload();
         $(btn).html(button);
     }
 </script>

@@ -137,9 +137,6 @@ function confirmDelete(data,url){
                             data.msg,
                             'success'
                         );
-
-                        tabelResources.ajax.reload();
-
                     }else{
                         swalDeleteButtons.fire(
                             data.status,
