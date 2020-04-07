@@ -37,6 +37,7 @@
                   <?= $this->session->flashdata('ERROR') ?>
                 </div>
               <?php endif; ?>
+              <input type="hidden" name="<?=$csrf['name'];?>" value="<?=$csrf['hash'];?>" />
               <div>
                 <input name='username' type="text" class="form-control" placeholder="Username" value='<?= $content_data['username'] ?>' required/>
               </div>

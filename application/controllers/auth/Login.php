@@ -12,6 +12,8 @@ class Login extends MY_Controller{
 
     public function index(){
 
+        $data['csrf'] = $this->getCsrf();
+
         if($this->session->userdata('LOGGEDIN')){
             redirect('dashboard');
         }
