@@ -133,7 +133,6 @@
                 csrf_name = data.csrf.name;
                 csrf_token = data.csrf.hash;
 
-                $('#modal').modal('hide');
                 if(data.status != "ERROR"){
                     showNotify(data.status,data.msg,'success');
                     tabelResources.ajax.reload();
@@ -143,9 +142,10 @@
                 $(btn).html(button);
             },
             error: function () {
-              showNotify('Error','Whoops, something when wrong on our servers','error');  
+                showNotify('Error','Whoops, something when wrong on our servers','error');  
             } 
         });
+        $('#modal').modal('hide');
         modal_overlay_hide();
     }
 
@@ -189,8 +189,7 @@
         let button = $(btn).html();
 
         $(btn).html("<i class='fa fa-spinner fa-spin'></i>Loading");
-        confirmDelete(dataDel,url);
-        tabelResources.ajax.reload();
+        confirmDelete(dataDel,url,tabelResources);
         $(btn).html(button);
     }
 </script>
