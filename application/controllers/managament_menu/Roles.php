@@ -92,14 +92,26 @@ class Roles extends MY_Controller
 
     public function delete()
     {
+        
         $this->checkAjaxRequest();
-        $data = [
-            'id_roles_menu' => $this->input->post('id_roles_menu')
-        ];
-
-        $delete = $this->roles_menu_model->delete($data);
-
-        echo json_encode($delete);
+        if($this->input->post('id_roles_menu') < 5 ){
+            $resp = array(
+                'status' => 'ERROR',
+                'msg' => "You don't have privillages to delete this data",
+                'csrf' => (object) $this->getCsrf()
+            );
+    
+            echo json_encode($resp);
+        }else{
+            
+            $data = [
+                'id_roles_menu' => $this->input->post('id_roles_menu')
+            ];
+    
+            $delete = $this->roles_menu_model->delete($data);
+    
+            echo json_encode($delete);
+        }
         
     }
 }

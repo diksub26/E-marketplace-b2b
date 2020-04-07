@@ -127,10 +127,11 @@ function confirmDelete(data,url){
                 dataType: 'JSON',
                 data : data,
                 success : function(data){
+                    csrf_name = data.csrf.name;
+                    csrf_token = data.csrf.hash;
+                    
                     swal_overlay_hide();
                     if(data.status != "ERROR"){
-                        csrf_name = data.csrf.name;
-                        csrf_token = data.csrf.hash;
 
                         swalDeleteButtons.fire(
                             'Deleted!',

@@ -51,6 +51,9 @@
 
     function render_act(data, type, row, meta){
         act = "<button class=\"btn btn-xs btn-primary\" onClick=get_detail("+data+",this) title='Detail/Update'><i class='fa fa-edit'></i></button> ";
+        if(data < 5 ){
+          return act;
+        }
         act += "<button class=\"btn btn-xs btn-danger\" onClick=deleteData("+data+",this) title='Hapus Data'><i class='fa fa-trash'></i></button> ";
         return act;
     }

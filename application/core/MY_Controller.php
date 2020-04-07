@@ -49,5 +49,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             exit();
         }   
     }
+
+    protected function getCsrf()
+    {
+        $csrf = array(
+            'name' => $this->security->get_csrf_token_name(),
+            'hash' => $this->security->get_csrf_hash()
+        );
+
+        return $csrf;
+    }
  }
  
