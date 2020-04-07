@@ -52,10 +52,11 @@
   });
 
     function render_act(data, type, row, meta){
-        act = "<button class=\"btn btn-xs btn-primary\" onClick=get_detail("+data+",this) title='Detail/Update'><i class='fa fa-edit'></i></button> ";
+        let act = '';
         if(data < 5 ){
           return act;
         }
+        act = "<button class=\"btn btn-xs btn-primary\" onClick=get_detail("+data+",this) title='Detail/Update'><i class='fa fa-edit'></i></button> ";
         act += "<button class=\"btn btn-xs btn-danger\" onClick=deleteData("+data+",this) title='Hapus Data'><i class='fa fa-trash'></i></button> ";
         return act;
     }
@@ -130,12 +131,10 @@
             dataType: 'JSON',
             data : formData,
             success : function(data){
+                csrf_name = data.csrf.name;
+                csrf_token = data.csrf.hash;
                 if(data.status != "ERROR"){
-                    $('#modal').modal('hide');
                     showNotify(data.status,data.msg,'success');
-                    csrf_name = data.csrf.name;
-                    csrf_token = data.csrf.hash;
-
                     tabelRoles.ajax.reload();
                 }else{
                     showNotify(data.status,data.msg,'error');
@@ -146,6 +145,7 @@
               showNotify('Error','Whoops, something when wrong on our servers','error');  
             }    
         });
+        $('#modal').modal('hide');
         modal_overlay_hide();
     }
 
@@ -155,10 +155,13 @@
         let button = $(btn).html();
 
         $(btn).html("<i class='fa fa-spinner fa-spin'></i>Loading");
-        confirmDelete(dataDel,url);
-        tabelRoles.ajax.reload();
+        confirmDelete(dataDel,url,tabelRoles);
 
         $(btn).html(button);
+    }
+
+    function test(){
+      
     }
 
     function updateData(data, btn){
@@ -177,8 +180,10 @@
           dataType: 'JSON',
           data : formData,
           success : function(data){
+              csrf_name = data.csrf.name;
+              csrf_token = data.csrf.hash;
+
               if(data.status != "ERROR"){
-                  $('#modal').modal('hide');
                   showNotify(data.status,data.msg,'success');
 
                   tabelRoles.ajax.reload();
@@ -191,6 +196,7 @@
             showNotify('Error','Whoops, something when wrong on our servers','error');  
           }   
       });
+      $('#modal').modal('hide');
       modal_overlay_hide();
     }
 </script>

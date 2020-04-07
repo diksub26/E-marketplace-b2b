@@ -34,11 +34,14 @@ class Roles extends MY_Controller
     public function getForm()
     {
         $this->checkAjaxRequest();
+        $parentRoles = $this->roles_menu_model->getParent();
+
         $csrf = array(
             'name' => $this->security->get_csrf_token_name(),
             'hash' => $this->security->get_csrf_hash()
         );
 
+        $data['parent'] = $parentRoles;
         $data['csrf'] = $csrf;
         $this->load->view($this->module.'/form', $data);
     }
@@ -63,17 +66,29 @@ class Roles extends MY_Controller
     public function update()
     {
         $this->checkAjaxRequest();
+        
         $id = [
-            'id_roles_menu' => $this->input->post('id_roles_menu')
+            'id_roles_menu' => $this->input->post('id_roles_menu'),
         ];
 
         $data = [
             'roles_name' => $this->input->post('roles_name'),
-            'updated_by' => $this->encryption->decrypt($this->session->userdata('ID'))
+            'id_parent_roles' => $this->input->post('id_parent_roles'),
+            'updated_by' => $this->encryption->decrypt($this->session->userdata('ID')),
         ];
 
-        $update = $this->roles_menu_model->update($id,$data);
-        echo json_encode($update);
+        if($id['id_roles_menu'] < 5){
+            $resp = array(
+                'status' => 'ERROR',
+                'msg' => "You don't have privillages to update this roles",
+                'csrf' => (object) $this->getCsrf()
+            );
+    
+            echo json_encode($resp);
+        }else{
+            $update = $this->roles_menu_model->update($id,$data);
+            echo json_encode($update);
+        }
     }
 
 
@@ -82,6 +97,7 @@ class Roles extends MY_Controller
         $this->checkAjaxRequest();
         $data = [
             'roles_name' => $this->input->post('roles_name'),
+            'id_parent_roles' => $this->input->post('id_parent_roles'),
             'created_by' => $this->encryption->decrypt($this->session->userdata('ID')),
             'updated_by' => $this->encryption->decrypt($this->session->userdata('ID'))
         ];

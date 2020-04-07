@@ -232,6 +232,7 @@
                 </div>
                 <!-- /page content -->
 
+            </div>
                 <!-- footer content -->
                 <footer>
                     <div class="pull-right">
@@ -240,7 +241,6 @@
                     <div class="clearfix"></div>
                 </footer>
                 <!-- /footer content -->
-            </div>
         </div>
 
         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">

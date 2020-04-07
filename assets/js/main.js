@@ -106,7 +106,7 @@ const swalDeleteButtons = Swal.mixin({
     buttonsStyling: false
 })
 
-function confirmDelete(data,url){
+function confirmDelete(data,url,table = ''){
     swalDeleteButtons.fire({
         title: 'Anda yakin ?',
         text: "Data yang anda pilih akan dihapus secara permenen !",
@@ -136,6 +136,11 @@ function confirmDelete(data,url){
                             data.msg,
                             'success'
                         );
+
+                        if(table != ''){
+                            table.ajax.reload();
+                        }
+                        
                     }else{
                         swalDeleteButtons.fire(
                             data.status,

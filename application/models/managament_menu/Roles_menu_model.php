@@ -67,4 +67,11 @@ class Roles_menu_model extends MY_Model
     {
         return $this->_get_data($this->table,$where,$column = $select)->result();
     }
+
+    public function getParent()
+    {
+        $this->db->from('parent_roles');
+
+        return $this->db->get()->result();
+    }
 }
