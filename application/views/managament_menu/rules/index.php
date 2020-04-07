@@ -121,10 +121,11 @@
           'acc' : access
         },
         success : function(data){
+          csrf_name = data.csrf.name;
+          csrf_token = data.csrf.hash;
+
           if(data.status != "ERROR"){
             showNotify(data.status,data.msg,'success');
-            csrf_name = data.csrf.name;
-            csrf_token = data.csrf.hash;
           }else{
             showNotify(data.status,data.msg,'error');
           }
@@ -233,10 +234,11 @@
         success : function(data){
           csrf_name = data.csrf.name;
           csrf_token = data.csrf.hash;
-          $('#modal').modal('hide');
 
           if(data.status != "ERROR"){
             showNotify(data.status,data.msg,'success');
+
+            //refresh content
             $('#'+data.roles_name+' > .x_panel >.x_content').html('');
             $('#'+data.roles_name+' > .x_panel >.x_content').html(data.html);
             if ($(".js-switch")[0]) {
@@ -258,6 +260,7 @@
           showNotify('Error','Whoops, something when wrong on our servers','error');  
         } 
     });
+    $('#modal').modal('hide');
     modal_overlay_hide();
   }
 </script>
