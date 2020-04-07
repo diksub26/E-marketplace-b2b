@@ -78,7 +78,7 @@ function swal_overlay(){
         minsize :20
     });
 
-    $('#modal').LoadingOverlay("show");
+    $('.swal2-container').LoadingOverlay("show");
 }
 
 function swal_overlay_hide(){
@@ -130,9 +130,7 @@ function confirmDelete(data,url){
                     csrf_name = data.csrf.name;
                     csrf_token = data.csrf.hash;
                     
-                    swal_overlay_hide();
                     if(data.status != "ERROR"){
-
                         swalDeleteButtons.fire(
                             'Deleted!',
                             data.msg,
@@ -147,7 +145,6 @@ function confirmDelete(data,url){
                     }
                 },
                 error: function () {
-                    swal_overlay_hide();
                     swalDeleteButtons.fire(
                         'Whoops, something when wrong on our servers',
                         'Please Try again or contact Administrator',
@@ -156,7 +153,7 @@ function confirmDelete(data,url){
                 }
             });
             $('.swal2-confirm').html(btn);
-
+            swal_overlay_hide();
         } else if (result.dismiss === Swal.DismissReason.cancel){
             swalDeleteButtons.close();
         }

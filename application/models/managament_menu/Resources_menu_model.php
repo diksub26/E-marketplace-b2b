@@ -40,4 +40,9 @@ class Resources_menu_model extends MY_Model
         }
         return $resp;
     }
+
+    public function getAllData($column ='',$where='')
+    {
+        return $this->_get_data($this->table, $where, $column)->result();
+    }
 }

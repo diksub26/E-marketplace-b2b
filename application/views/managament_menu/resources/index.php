@@ -130,10 +130,12 @@
             dataType: 'JSON',
             data : formData,
             success : function(data){
-                if(data.status != "ERROR"){
-                    $('#modal').modal('hide');
-                    showNotify(data.status,data.msg,'success');
+                csrf_name = data.csrf.name;
+                csrf_token = data.csrf.hash;
 
+                $('#modal').modal('hide');
+                if(data.status != "ERROR"){
+                    showNotify(data.status,data.msg,'success');
                     tabelResources.ajax.reload();
                 }else{
                     showNotify(data.status,data.msg,'error');
@@ -161,11 +163,12 @@
             dataType: 'JSON',
             data : formData,
             success : function(data){
+                csrf_name = data.csrf.name;
+                csrf_token = data.csrf.hash;
+                $('#modal').modal('hide');
+                
                 if(data.status != "ERROR"){
-                    $('#modal').modal('hide');
                     showNotify(data.status,data.msg,'success');
-                    csrf_name = data.csrf.name;
-                    csrf_token = data.csrf.hash;
 
                     tabelResources.ajax.reload();
                 }else{

@@ -15,6 +15,8 @@ class Resources extends MY_Controller
          $this->set_title('Kelola Resources Menu');
     }
 
+    private $prevent_resources = array(0,1,2);
+
     public function index()
     {
         $this->template->set_auto_js(false);
@@ -61,6 +63,7 @@ class Resources extends MY_Controller
     public function update()
     {
         $this->checkAjaxRequest();
+        $update = '';
         $id = [
             'id_menu' => $this->input->post('id_menu')
         ];
@@ -71,7 +74,12 @@ class Resources extends MY_Controller
             'updated_by' => $this->encryption->decrypt($this->session->userdata('ID'))
         ];
 
-        $update = $this->resources_menu_model->update($id,$data);
+        if(in_array($id['id_menu'], $this->prevent_resources)){
+            $update = $this->getPreventMsg();
+        }else{
+            $update = $this->resources_menu_model->update($id,$data);
+        }
+
         echo json_encode($update);
     }
 
@@ -81,10 +89,16 @@ class Resources extends MY_Controller
         $data = [
             'id_menu' => $this->input->post('id_menu')
         ];
+        $delete = '';
 
-        $delete = $this->resources_menu_model->delete($data);
+        if(in_array($data['id_menu'], $this->prevent_resources)){
+            $delete = $this->getPreventMsg();
+        }else{
+            $delete = $this->resources_menu_model->delete($data);
+        }
 
         echo json_encode($delete);
+
         
     }
 

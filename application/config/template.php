@@ -30,7 +30,7 @@ $config['template']['js'] = array(
     'node_modules/gentelella/vendors/iCheck/icheck.min.js',
     'node_modules/gentelella/vendors/pnotify/dist/pnotify.js',
     'node_modules/gentelella/vendors/pnotify/dist/pnotify.buttons.js',
-    'node_modules/gentelella/build/js/custom.js',
+    'js/custom.js',
 );
 
 $config['template']['js_list'] = array(

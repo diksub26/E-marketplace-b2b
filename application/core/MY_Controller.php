@@ -59,5 +59,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         return $csrf;
     }
+
+    protected function getPreventMsg(){
+        $msg = array(
+            'status' => 'ERROR',
+            'msg' => "You don't have privillages to delete/update this data",
+            'csrf' => (object) $this->getCsrf()
+        ); 
+
+        return $msg;
+    }
  }
  

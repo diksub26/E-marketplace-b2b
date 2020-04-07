@@ -5,6 +5,7 @@ class Roles_menu_model extends MY_Model
 {
 
     private $table_login = 'login';
+    private $parent_roles = 'parent_roles';
 
     public function __construct() {
         parent::__construct();
@@ -16,11 +17,16 @@ class Roles_menu_model extends MY_Model
     {
         // param for data table
         $join = array();
-        $select = 'id_roles_menu, roles_name, login.USERNAME';
+        $select = "id_roles_menu, roles_name, login.USERNAME, $this->parent_roles.name as parent";
 
         $join[] = [
             'table' => $this->table_login,
             'condition' => $this->table_login.'.ID = '.$this->table.'.created_by',
+        ];
+
+        $join[] = [
+            'table' => $this->parent_roles,
+            'condition' => $this->parent_roles.'.id_parent_roles = '.$this->table.'.id_parent_roles',
         ];
 
         return $this->_build_data_tables($this->table,'',$select,$join);
@@ -55,5 +61,10 @@ class Roles_menu_model extends MY_Model
         }
 
         return $response;
+    }
+
+    public function getAllData($select = '', $where ='')
+    {
+        return $this->_get_data($this->table,$where,$column = $select)->result();
     }
 }

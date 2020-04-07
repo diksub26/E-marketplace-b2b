@@ -14,6 +14,7 @@
                <tr clas="headings">
                  <th name='No'>No</th>
                  <th>Nama Role</th>
+                 <th>Parent Name</th>
                  <th>Created By </th>
                  <th>Action</th>
                </tr>
@@ -44,6 +45,7 @@
          "columns": [
              {"render" : render_id_dt},
              { "name": "roles_name", "data" : "roles_name"},
+             { "name": "parent_roles.name", "data" : "parent"},
              { "name": "USERNAME", "data" : "USERNAME"},
              { "data" : "id_roles_menu","render" : render_act,"className" : 'text-center'}
             ],
