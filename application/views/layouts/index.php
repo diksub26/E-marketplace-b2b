@@ -56,7 +56,7 @@
                                 foreach($template['navbar'] as $key => $nav_lvl_1):?>
                                 <li class="<?php echo ( $this->uri->segment(1) == $key ? 'active': "")?>">
                                     <?php $has_children = isset($nav_lvl_1['children']) && is_array($nav_lvl_1['children']); ?>
-                                    <a <?php if(!$has_children){ echo "href='".base_url($key)."'";} ?>><i
+                                    <a <?php if(!$has_children){ echo "href='".base_url($nav_lvl_1['uri'])."'";} ?>><i
                                             class="<?php echo $nav_lvl_1['icon'] ?>"></i>
                                         <?php echo $nav_lvl_1['title'] ?>
                                         <?php if ($has_children) :?>

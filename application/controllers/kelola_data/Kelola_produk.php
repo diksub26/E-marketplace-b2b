@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Kelola_produk extends MY_Controller 
+class Kelola_produk extends Admin_Controller 
 {
     public function __construct() {
         parent::__construct();

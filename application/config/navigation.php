@@ -5,19 +5,38 @@
  */
 
  $config['navigation'] = array(
-    'dashboard' => array(
-        'title' => 'Dashboard',
-        'icon' => 'fa fa-dashboard',
-        'uri' => 'dashboard'
+    'home' => array(
+        'title' => 'home',
+        'icon' => 'fa fa-home',
+        'uri' => 'public/home'
     ),
+
     'kelola_data' => array(
-        'title' => 'Kelola data',
+        'title' => 'Kelola Data',
         'icon' => 'fa fa-list',
         'children' => array(
             'kelola_data-kelola_produk' => array(
                 'uri' => 'kelola_data/kelola_produk',
                 'title' => 'Kelola Produk',
             )
+        )
+    ),
+    'managament_user' => array(
+        'title' => 'Kelola Users',
+        'icon' => 'fa fa-users',
+        'children' => array(
+            'managament_user-sys_admin' => array(
+                'uri' => 'managament_user/admin',
+                'title' => 'Daftar Sys Admin'
+            ),
+            'managament_user-umkm' => array(
+                'uri' => 'managament_user/umkm',
+                'title' => 'Daftar UMKM'
+            ),
+            'managament_user-distributor' => array(
+                'uri' => 'managament_user/distributor',
+                'title' => 'Daftar Distributor'
+            ),
         )
     ),
     'managament_menu' => array(

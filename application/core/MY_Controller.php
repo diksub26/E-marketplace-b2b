@@ -27,17 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $this->session->set_userdata('USERNAME','GUEST');
             $this->session->set_userdata('ROLE_NAME','GUEST');
         }
-
-        // check acl
-        $this->my_acl->acl_init();
-        $allowed =  $this->my_acl->is_allowed($this->uri->uri_string());
-        if(!$allowed){
-            redirect('landing_page');
-        }        
-    }
-
-    public function set_title($title){
-        $this->template->set_title($title);
+       
     }
 
     protected function checkAjaxRequest(){
@@ -59,15 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         return $csrf;
     }
-
-    protected function getPreventMsg(){
-        $msg = array(
-            'status' => 'ERROR',
-            'msg' => "You don't have privillages to delete/update this data",
-            'csrf' => (object) $this->getCsrf()
-        ); 
-
-        return $msg;
-    }
  }
+
+include_once(APPPATH . '/core/Admin_Controller.php');
  

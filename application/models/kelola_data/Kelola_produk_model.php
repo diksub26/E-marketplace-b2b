@@ -22,11 +22,12 @@ class Kelola_produk_model extends MY_Model
     }
 
     public function get_data_tables(){
-        $user_id = $this->encryption->decrypt($this->session->userdata('ID'));
+        $umkm_id = $this->encryption->decrypt($this->session->userdata('UMKM_ID'));
         $select = array(
             'ID_PRODUK','NAMA','HARGA','KATEGORI','STOCK'
         );
-        return $this->_build_data_tables('v_produk',array('ID_PRODUK' => $user_id),$select);
+
+        return $this->_build_data_tables('v_produk',array('UMKM_ID' => $umkm_id),$select);
     }
 
     public function get_data_by_id($id ='')

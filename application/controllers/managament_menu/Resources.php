@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Resources extends MY_Controller 
+class Resources extends Admin_Controller 
 {
     public function __construct() {
         parent::__construct();
@@ -15,7 +15,7 @@ class Resources extends MY_Controller
          $this->set_title('Kelola Resources Menu');
     }
 
-    private $prevent_resources = array(0,1,2);
+    private $prevent_resources = array(0,1,2,3,4,5);
 
     public function index()
     {

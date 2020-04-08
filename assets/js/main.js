@@ -31,10 +31,6 @@ $(document).ready(function(){
     // });
 })
 
-function render_id_dt(data,type,full,meta){
-    return meta.row +meta.settings._iDisplayStart + 1;
-}
-
 function clear_modal(){
     var lg = $('#modal-dialog').hasClass('.modal-lg');
 
@@ -164,3 +160,42 @@ function confirmDelete(data,url,table = ''){
         }
       })
 }
+
+/**
+ * this function for rendering data table
+ */
+
+// Convert cell value to formatted date.
+function dt_date(data, type, row, meta) {
+    if (type === 'display')
+        return moment(data).isValid() ? moment(data).format('DD/MM/YYYY') : data;
+    else
+        return data;
+}
+function dt_datetime(data, type, row, meta) {
+    if (type === 'display')
+        return moment(data).isValid() ? moment(data).format('DD/MM/YYYY HH:mm:ss') : data;
+    else
+        return data;
+}
+// Convert cell value to formatted number (integer).
+function dt_number(data, type, row, meta) {
+    if (type === 'display')
+        return numeral(data).format('#,##0');
+    else
+        return data;
+}
+
+// Convert cell value to formatted currency number.
+function dt_currency(data, type, row, meta) {
+    if (type === 'display')
+        return numeral(data).format('#,##0.00');
+    else
+        return data;
+}
+
+function render_id_dt(data,type,full,meta){
+    return meta.row +meta.settings._iDisplayStart + 1;
+}
+
+/* end of function rendering data table*/

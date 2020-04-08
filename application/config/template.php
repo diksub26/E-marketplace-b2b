@@ -20,6 +20,7 @@ $config['template']['js_header'] = array(
     'node_modules/gentelella/vendors/jquery/dist/jquery.min.js',
     'node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.min.js',
     'node_modules/sweetalert2/dist/sweetalert2.all.min.js',
+    'node_modules/gentelella/vendors/moment/min/moment.min.js',
     'js/main.js',
 );
 

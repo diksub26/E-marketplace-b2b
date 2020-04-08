@@ -109,7 +109,9 @@ class Login_Model extends MY_Model
             $password_data = $this->checking_password($data_username->ID, $data['password']);
 
             if($password_data == 1){
-                $data_username->ROLE_NAME = $this->_get_role($data_username->ROLE_ID); 
+                $this->_update_last_login($data_username->ID);
+                $data_username->ROLE_NAME = $this->_get_role($data_username->ROLE_ID)['ROLES_NAME']; 
+                $data_username->ID_PARENT = $this->_get_role($data_username->ROLE_ID)['ID_PARENT']; 
                              
                 $login_data = array('status' => 'SUCCESS', 'msg' => 'BERHASIL LOGIN KE SISTEM','data' => $data_username);
                 $this->activity_log->write_log($data_username->USERNAME, 'Login Berhasil');
@@ -163,6 +165,22 @@ class Login_Model extends MY_Model
         $this->db->where(array('id_roles_menu' => $id_role));
         $query = $this->db->get()->row();
 
-        return (isset($query->roles_name) ? $query->roles_name : '');
+        return array(
+            'ROLES_NAME' => (isset($query->roles_name) ? $query->roles_name : ''),
+            'ID_PARENT' => (isset($query->id_parent_roles) ? $query->id_parent_roles : ''),
+        );
+    }
+    
+    private function _update_last_login($user_id)
+    {
+        $id = array(
+            'ID' => $user_id
+        );
+
+        $data = array(
+            'LAST_LOGIN' => date('Y-m-d H:i:s')
+        );
+
+        $this->db->update($this->table_login, $data, $id);
     }
 }

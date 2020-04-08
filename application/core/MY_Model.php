@@ -26,7 +26,7 @@ class MY_Model extends CI_Model
         return $query;
     }
 
-    protected function _get_data($table,$where = '', $column = ''){
+    protected function _get_data($table,$where = '', $column = '', $order=array(), $limit=''){
 
         if(empty($table) || !is_string($table)){
             show_error("TABLE OR VIEW NAME FORMAT IS INVALID, CHECK YOU'RE MODEL",500,'MODEL ERROR');
@@ -38,6 +38,32 @@ class MY_Model extends CI_Model
 
         if(!empty($where)){
             $this->db->where($where);
+        }
+
+        if(!empty($order)){
+            if(is_array($order)){
+                if(isset($order['column'])){
+                    if(isset($order['options'])){
+                        $this->db->order_by($order['column'], $order['options']);
+                    }else{
+                        $this->db->order_by($order['column'], 'ASC');
+                    }
+                }
+            }
+        }
+
+        if(!empty($limit)){
+            if(is_array($limit)){
+                if(isset($limit['start'])){
+                    if(isset($limit['stop'])){
+                        $this->db->limit($limit['start'], $limit['stop']);
+                    }else{
+                        $this->db->limit($limit['column']);
+                    }
+                }
+            }else{
+                $this->db->limit($limit);
+            }
         }
 
         $query = $this->db->get($table);
@@ -155,7 +181,7 @@ class MY_Model extends CI_Model
 
         $output = array( 
             "draw" => $this->input->get('draw'),
-            "recordsTotal" => $this->_count_all($table,$where,$select),
+            "recordsTotal" => $this->_count_all($table,$where,$select,$join),
             "recordsFiltered" => $this->_dt_count_filtered($table, $where,$select,$join),
             "data" => $this->_data_tables_basic($table,$where,$select,$join),
         );
@@ -208,7 +234,7 @@ class MY_Model extends CI_Model
      * @param $join array([] => array('table',condition','join(standart ci)'));
      */
 
-    private function _data_table_basic_query($table, $where = '',$select,$join = array()){
+    private function _data_table_basic_query($table, $where = '',$select ='' ,$join = array()){
         $get = $this->input->get();
         
         $this->db->from($table);
@@ -235,30 +261,25 @@ class MY_Model extends CI_Model
         if(!empty($where)){
             $this->db->where($where);
         }
+
         $column = $get['columns'];
 
         $x = 0;
+        $like = '';
         foreach ($column as $item) {
             if(isset($get['search']['value'])){
-
+                
                 if(!empty($item['name'])){
-                    if($x===0) // looping awal
-                    {
-                        $this->db->group_start(); 
-                        $this->db->like($item['name'], $get['search']['value']);
-                    }
-                    else
-                    {
-                        $this->db->or_like($item['name'], $get['search']['value']);
-                    }
-     
-                    if(count($column) - 1 == $x) 
-                        $this->db->group_end();
+                    $sSearch = $this->db->escape_like_str(trim($get['search']['value']));
+                    $like .= $item['name']." LIKE '%$sSearch%' OR ";
                 }
- 
+                    
             }
-
-            $x++;
+        }
+        
+        $like = substr_replace($like, '', -3);
+        if ($like != '') {
+            $this->db->where('(' . $like . ')');            
         }
 
         if(isset($get['order'])) 

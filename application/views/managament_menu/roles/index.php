@@ -160,10 +160,6 @@
         $(btn).html(button);
     }
 
-    function test(){
-      
-    }
-
     function updateData(data, btn){
 
       modal_overlay();

@@ -443,5 +443,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             return $this->ci->load->view($this->layout_path.'/'.$this->layout_name, $data);
         }
 
+        /**
+         * Build the template with no acl
+         * 
+         * @param string $content
+         * @param array $data
+         */
+        public function buildNoAcl($content, $content_data = array()){
+            
+            // if(){
+                $csrf = array(
+                    'name' => $this->ci->security->get_csrf_token_name(),
+                    'hash' => $this->ci->security->get_csrf_hash()
+                );
+
+                $data['csrf'] = $csrf;
+            // }
+
+            $template['css'] = $this->css;
+            $template['js_header'] = $this->js_header;
+            $template['content'] = $content;
+            $template['auto_js'] = $this->auto_js_location;
+
+            if($this->auto_js_location == false){
+                $js_list = '' ;
+                foreach($this->js as $value){
+                    $js_list .= '<script src="'.$value.'"></script>';
+                    $template['js'] = $js_list;
+                }
+            }else{
+                $template['js'] = $this->js;
+            }
+            
+            $data['content_data'] = $content_data; 
+            $data['template'] = $template; 
+            $data['title'] = (!empty($this->title) ? $this->base_title.$this->title_separator.$this->title : $this->base_title); 
+            $data['title_page'] = (!empty($this->title) ? $this->title : ''); 
+
+            return $this->ci->load->view($this->layout_path.'/'.$this->layout_name, $data);
+        }
+
   }
   

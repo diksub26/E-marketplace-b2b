@@ -15,7 +15,7 @@ class Login extends MY_Controller{
         $data['csrf'] = $this->getCsrf();
 
         if($this->session->userdata('LOGGEDIN')){
-            redirect('dashboard');
+            redirect('home');
         }
         //change the layouts to layouts login
         $this->template->set_layout_path('');
@@ -43,12 +43,16 @@ class Login extends MY_Controller{
                         $this->session->set_userdata('ROLE_NAME',$login['data']->ROLE_NAME);
                         $this->session->set_userdata('LOGGEDIN', TRUE);
 
+                        //mapping additional session
+                        $this->_mapping_additional_session($login['data']->ID_PARENT);
+                        // print_r($this->session->userdata());exit();
+
                         //update roles
                         $this->load->model('acl/resources_model');
                         $this->resources_model->update_roles();  
                         
                         //redirect if logged in
-                        redirect("dashboard");
+                        redirect("public/home");
                     }else{
                         $data['username'] = $post['username'];
                         $data['pass'] = $post['password'];
@@ -70,7 +74,7 @@ class Login extends MY_Controller{
             }
         }
         
-        $this->template->build('', $data);
+        $this->template->buildNoAcl('', $data);
     }
 
     public function logout()
@@ -81,5 +85,19 @@ class Login extends MY_Controller{
         $this->session->sess_destroy();
         
         redirect('auth/login');
+    }
+
+    private function _mapping_additional_session($parent_id)
+    {
+        switch ($parent_id) {
+            case '2':
+                $this->load->model('managament_user/umkm_model');
+                $data = $this->umkm_model->getUmkmUser('UMKM_ID');
+                $this->session->set_userdata('UMKM_ID',$this->encryption->encrypt($data->UMKM_ID) );
+                break;            
+            default:
+                return '';
+                break;
+        }
     }
 }
