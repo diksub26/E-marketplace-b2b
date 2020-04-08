@@ -45,7 +45,7 @@
       "ajax": {
           "url" : "<?= base_url().$this->module.'/data_tables'?>",
           "data" : { <?= $csrf['name']; ?> : "<?= $csrf['hash']; ?>" },
-          "type" : "POST"
+          "type" : "GET"
       },
       "columns": [
           {"render" : render_id_dt},
