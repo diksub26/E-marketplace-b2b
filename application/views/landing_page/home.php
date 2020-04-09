@@ -1,1 +1,1 @@
-<a href="<?php echo base_url().'auth/login'?>">Login</a>
+<a href="<?php echo base_url().'login'?>">Login</a>

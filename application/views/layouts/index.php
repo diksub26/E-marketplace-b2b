@@ -96,7 +96,7 @@
                             <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
                         </a>
                         <a data-toggle="tooltip" data-placement="top" title="Logout"
-                            href="<?= base_url('auth/login/logout')?>">
+                            href="<?= base_url('logout')?>">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                         </a>
                     </div>
@@ -129,7 +129,7 @@
                                         </a>
                                     </li>
                                     <li><a href="javascript:;">Help</a></li>
-                                    <li><a href="<?= base_url('auth/login/logout')?>"><i
+                                    <li><a href="<?= base_url('logout')?>"><i
                                                 class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                 </ul>
                             </li>

@@ -40,14 +40,14 @@ class My_Acl
                 }
             }
         }else{
-            show_error("No Resources for this account, contact you're Administrator",404, $heading = 'No Resources');
-            exit();
+           redirect('/');
         }
     }
 
     public function is_allowed($resource)
     {
-        if($this->CI->uri->uri_string() == '' || $this->CI->uri->uri_string() == 'landing_page'){
+        
+        if($this->CI->uri->uri_string() == ''){
             return TRUE;
         }
 

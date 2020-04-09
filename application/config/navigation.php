@@ -8,15 +8,15 @@
     'home' => array(
         'title' => 'home',
         'icon' => 'fa fa-home',
-        'uri' => 'public/home'
+        'uri' => 'home'
     ),
 
-    'kelola_data' => array(
+    'data_managament' => array(
         'title' => 'Kelola Data',
         'icon' => 'fa fa-list',
         'children' => array(
             'kelola_data-kelola_produk' => array(
-                'uri' => 'kelola_data/kelola_produk',
+                'uri' => 'data_managament/products',
                 'title' => 'Kelola Produk',
             )
         )

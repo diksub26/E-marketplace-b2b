@@ -14,11 +14,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  {
 
     /**
-     * module name
+     * resources name
      * @var string
      *      
      * */
-    public $module;
+    public $resources = '';
 
     public function __construct(){
         parent::__construct();

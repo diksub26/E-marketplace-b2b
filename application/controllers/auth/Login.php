@@ -5,9 +5,20 @@ class Login extends MY_Controller{
 
     public function __construct() {
         parent::__construct();
+
+        //set module
+        $this->module = 'auth/login';
+
+        //model
         $this->load->model('auth/login_model');
         $this->model = $this->login_model;
+
+        //set title
         $this->template->set_title('Login');
+
+        //change the layouts to layouts login
+        $this->template->set_layout_path($this->module);
+        $this->template->set_layout_name('index');
     }
 
     public function index(){
@@ -16,10 +27,7 @@ class Login extends MY_Controller{
 
         if($this->session->userdata('LOGGEDIN')){
             redirect('home');
-        }
-        //change the layouts to layouts login
-        $this->template->set_layout_path('');
-        $this->template->set_layout_name('login');
+        };
 
         $data = array(
             'username' => '',
@@ -52,7 +60,7 @@ class Login extends MY_Controller{
                         $this->resources_model->update_roles();  
                         
                         //redirect if logged in
-                        redirect("public/home");
+                        redirect("home");
                     }else{
                         $data['username'] = $post['username'];
                         $data['pass'] = $post['password'];
@@ -84,7 +92,7 @@ class Login extends MY_Controller{
         //clear session
         $this->session->sess_destroy();
         
-        redirect('auth/login');
+        redirect('/');
     }
 
     private function _mapping_additional_session($parent_id)

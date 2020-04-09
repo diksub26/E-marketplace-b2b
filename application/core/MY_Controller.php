@@ -49,6 +49,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         return $csrf;
     }
+
+    protected function _getRandomString($length = '', $type = ''){
+
+        $this->load->helper('string');
+        
+        $valid_str = array(
+            'alpha','number','basic','numeric','nozero','md5','sha1'
+        );
+
+        $ran_type = 'alnum';
+        $ran_length = '250';
+
+        //set default random string
+        if(is_string($type) && !empty($type)){
+            if(in_array($type)){
+                $ran_type = $type;
+            }
+        }
+
+        if(is_numeric($length) && !empty($length)){
+            $ran_length = $length;
+        }
+
+        return random_string($ran_type, $ran_length);
+        
+    }
  }
 
 include_once(APPPATH . '/core/Admin_Controller.php');

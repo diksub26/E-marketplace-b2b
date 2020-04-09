@@ -15,7 +15,7 @@ class Resources extends Admin_Controller
          $this->set_title('Kelola Resources Menu');
     }
 
-    private $prevent_resources = array(0,1,2,3,4,5);
+    private $prevent_resources = array(0,1,2,3,4,5,6);
 
     public function index()
     {

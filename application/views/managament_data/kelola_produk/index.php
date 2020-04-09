@@ -34,7 +34,7 @@
 
 <script>
   //variabel global
-  var module_url = "<?= base_url().$this->module?>";
+  var module_url = "<?= base_url().$this->resources?>";
 
   $(document).ready(function() {
 
@@ -43,7 +43,7 @@
       "ordering" : true,
       "serverSide": true,
       "ajax": {
-          "url" : "<?= base_url().$this->module.'/data_tables'?>",
+          "url" : "<?= base_url().$this->resources.'/dt'?>",
           "data" : { <?= $csrf['name']; ?> : "<?= $csrf['hash']; ?>" },
           "type" : "GET"
       },
@@ -71,9 +71,9 @@ function get_detail(data,btn){
     $(btn).html("<i class='fa fa-spinner fa-spin'></i>Loading");
     clear_modal(); 
     $('.modal-title').html('<i class="fa fa-edit"></i> Detail Data Produk');
-    $('.modal-body').load(module_url + "/getForm",function(){
+    $('.modal-body').load(module_url + "/form",function(){
       $.ajax({
-        url : module_url + '/getDetailProduk',
+        url : module_url + '/detail',
         type: "POST",
         dataType: 'JSON',
         data : {<?= $csrf['name']; ?> : "<?= $csrf['hash']; ?>", 'ID_PRODUK' : data},
@@ -106,7 +106,7 @@ function addProduct(){
   $('#btn-add').html("<i class='fa fa-spinner fa-spin'></i>Loading");
   clear_modal();
   $('.modal-title').html('<i class="fa fa-edit"></i> Tambah Data');
-  $('.modal-body').load(module_url + "/getForm",function(){
+  $('.modal-body').load(module_url + "/form",function(){
     $('.mask > p').html('Upload Foto Produk');
   });
   $('.modal-footer').append('<button type="button" class="btn btn-success" id="btnSave" onClick="saveData()"><i class="fa fa-save"></i> Simpan</button>');

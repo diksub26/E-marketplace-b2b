@@ -52,3 +52,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'landing_page';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+/** all routes default*/
+$route['auth/login'] = 'deny';
+$route['auth/login/logout'] = 'deny';
+$route['auth/register'] = 'deny';
+$route['public/home'] = 'deny';
+$route['managament_data/kelola_produk'] = 'deny';
+$route['managament_data/kelola_produk/data_tables'] = 'deny';
+$route['managament_data/kelola_produk/getDetailProduk'] = 'deny';
+
+/** end routes default */
+
+
+/** all new routes*/
+$route['login'] = 'auth/login';
+$route['logout'] = 'auth/login/logout';
+$route['register'] = 'auth/register';
+$route['home'] = 'public/home';
+$route['data_managament/products'] = 'managament_data/kelola_produk';
+$route['data_managament/products/dt'] = 'managament_data/kelola_produk/data_tables';
+$route['data_managament/products/form'] = 'managament_data/kelola_produk/getForm';
+$route['data_managament/products/detail'] = 'managament_data/kelola_produk/getDetailProduk';
+
+/** end new routes */
+

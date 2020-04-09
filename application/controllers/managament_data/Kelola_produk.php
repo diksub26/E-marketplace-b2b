@@ -6,8 +6,9 @@ class Kelola_produk extends Admin_Controller
     public function __construct() {
         parent::__construct();
 
-        $this->module = 'kelola_data/kelola_produk';
-
+        $this->module = 'managament_data/kelola_produk';
+        $this->resources = 'data_managament/products';
+        
         //model
         $this->load->model($this->module.'_model');
 
