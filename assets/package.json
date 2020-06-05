@@ -4,6 +4,7 @@
   "description": "front end",
   "main": "index.js",
   "dependencies": {
+    "font-awesome": "^4.7.0",
     "gasparesganga-jquery-loading-overlay": "^2.1.6",
     "gentelella": "^1.4.0",
     "select2": "^4.0.13",
@@ -13,6 +14,8 @@
     "browser-sync": "^2.26.7",
     "browser-sync-webpack-plugin": "^2.0.1",
     "laravel-mix": "^5.0.4",
+    "sass": "^1.26.8",
+    "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
   },
   "scripts": {

@@ -1,5 +1,11 @@
 {
     "/dist/css/app.css": "/dist/css/app.css",
+    "/dist/css/font-awesomes.css": "/dist/css/font-awesomes.css",
+    "/dist/fonts/glyphicons-halflings-regular.eot": "/dist/fonts/glyphicons-halflings-regular.eot",
+    "/dist/fonts/glyphicons-halflings-regular.svg": "/dist/fonts/glyphicons-halflings-regular.svg",
+    "/dist/fonts/glyphicons-halflings-regular.ttf": "/dist/fonts/glyphicons-halflings-regular.ttf",
+    "/dist/fonts/glyphicons-halflings-regular.woff": "/dist/fonts/glyphicons-halflings-regular.woff",
+    "/dist/fonts/glyphicons-halflings-regular.woff2": "/dist/fonts/glyphicons-halflings-regular.woff2",
     "/dist/js/app.js": "/dist/js/app.js",
     "/dist/js/bundle.js": "/dist/js/bundle.js",
     "/dist/plugin/js/data-tables.js": "/dist/plugin/js/data-tables.js",

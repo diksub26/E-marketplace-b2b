@@ -28,7 +28,6 @@ mix
     /* GLOBAL CSS */
     .styles([
         'node_modules/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css',
-        'node_modules/gentelella/vendors/font-awesome/css/font-awesome.css',
         'node_modules/gentelella/vendors/iCheck/skins/flat/green.css',
         'node_modules/gentelella/vendors/nprogress/nprogress.css',
         'node_modules/gentelella/vendors/pnotify/dist/pnotify.css',
@@ -36,19 +35,30 @@ mix
         'node_modules/sweetalert2/dist/sweetalert2.all.min.css',
         'node_modules/gentelella/build/css/custom.min.css',
     ], 'dist/css/app.css')
-  
+
+    /** Font Awesomes */
+    .copy('node_modules/gentelella/vendors/font-awesome/css/font-awesome.css', 'dist/css/font-awesomes.css')
+    .copy('node_modules/gentelella/vendors/font-awesome/fonts', 'dist/fonts')
+
+    /** Glyphicons */
+    .copy('node_modules/gentelella/documentation/fonts/glyphicons-halflings-regular.eot', 'dist/fonts')
+    .copy('node_modules/gentelella/documentation/fonts/glyphicons-halflings-regular.svg', 'dist/fonts')
+    .copy('node_modules/gentelella/documentation/fonts/glyphicons-halflings-regular.ttf', 'dist/fonts')
+    .copy('node_modules/gentelella/documentation/fonts/glyphicons-halflings-regular.woff', 'dist/fonts')
+    .copy('node_modules/gentelella/documentation/fonts/glyphicons-halflings-regular.woff2', 'dist/fonts')
+
     /* GLOBAL JS HEADER */
     .scripts([
         'node_modules/gentelella/vendors/jquery/dist/jquery.min.js',
         'node_modules/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js',
         'node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.min.js',
+        'node_modules/gentelella/vendors/moment/min/moment.min.js',
+        'node_modules/sweetalert2/dist/sweetalert2.all.min.js',
         'js/main.js'
     ], 'dist/js/app.js')
 
     /* GLOBAL JS FOOTER */
     .scripts([
-        'node_modules/gentelella/vendors/moment/min/moment.min.js',
-        'node_modules/sweetalert2/dist/sweetalert2.all.min.js',
         'node_modules/gentelella/vendors/fastclick/lib/fastclick.js',
         'node_modules/gentelella/vendors/nprogress/nprogress.js',
         'node_modules/gentelella/vendors/iCheck/icheck.min.js',

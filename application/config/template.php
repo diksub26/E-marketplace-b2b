@@ -6,22 +6,13 @@ $config['template']['layout_name'] = 'index';
 $config['template']['assets_path'] = 'assets';
 
 $config['template']['css'] = array(
-    'node_modules/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css',
-    'node_modules/gentelella/vendors/font-awesome/css/font-awesome.css',
-    'node_modules/gentelella/vendors/iCheck/skins/flat/green.css',
-    'node_modules/gentelella/vendors/nprogress/nprogress.css',
-    'node_modules/gentelella/vendors/pnotify/dist/pnotify.css',
-    'node_modules/gentelella//vendors/pnotify/dist/pnotify.buttons.css',
-    'node_modules/sweetalert2/dist/sweetalert2.all.min.css',
-    'node_modules/gentelella/build/css/custom.min.css',
-    );
+    "dist/css/font-awesomes.css",
+    "dist/css/glyp-icons.css",
+    "dist/css/app.css"
+);
 
 $config['template']['js_header'] = array(
-    'node_modules/gentelella/vendors/jquery/dist/jquery.min.js',
-    'node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.min.js',
-    'node_modules/sweetalert2/dist/sweetalert2.all.min.js',
-    'node_modules/gentelella/vendors/moment/min/moment.min.js',
-    'js/main.js',
+    'dist/js/app.js'
 );
 
 $config['template']['js'] = array(
